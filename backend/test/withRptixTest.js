@@ -6,7 +6,7 @@ chai.use(chaiHttp)
 const {expect} = chai
 const app = 'localhost:8000'
 
-describe('rptix', function () {
+describe('rptix test', function () {
     let server = null
     let db = null
 
@@ -16,11 +16,15 @@ describe('rptix', function () {
         db = require('../server').db
     })
 
-    after(() => server.close())
+    after((done) => {
+        delete require.cache[require.resolve( '../server' )]
+        server.close()
+        done()
+    })
 
-    it('POST /send - send a telegram using rptix', (done) => {
+    it('POST /send-telegram - send a telegram using rptix', (done) => {
         chai.request(app)
-            .post('/send')
+            .post('/send-telegram')
             .send({
                 message: '',
                 receivers: []
