@@ -26,8 +26,8 @@ describe('rptix test', function () {
         chai.request(app)
             .post('/send-telegram')
             .send({
-                message: '',
-                receivers: []
+                message: 'Test-Message',
+                receivers: [1234567, 7645321]
             })
             .end((err, res) => {
                 expect(res.status).to.be.equal(200)

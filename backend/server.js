@@ -1,6 +1,5 @@
 const sqlite3 = require('sqlite3');
 const express = require("express");
-
 const app = express();
 app.use(express.json());
 
@@ -39,10 +38,10 @@ app.get("/receivers/:id", (req, res, next) => {
 app.get("/receivers", (req, res, next) => {
     db.all("SELECT * FROM receivers", [], (err, rows) => {
         if (err) {
-            res.status(400).json({ "error": err.message });
+            res.status(400).json({"error": err.message});
             return;
         }
-        res.status(200).json({ rows });
+        res.status(200).json({rows});
     });
 });
 
@@ -87,15 +86,27 @@ app.delete("/receivers/:id", (req, res, next) => {
 
 app.post("/send-telegram", (req, res, next) => {
     // delegate to rptix driver implementation
-    const rptixHandler = new RPTIX(req.body.message, req.body.receivers)
+    const {exec} = require('child_process');
 
-    res.status(200).json({ sent: true })
+    for (let receiver of req.body.receivers) {
+        exec(`echo "${receiver}: ${req.body.message}"`, (error, stdout, stderr) => {
+            // exec(`echo -e "${receiver}: ${this.message}" | pocsag -f 173236000 -r 512 -t 1`, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            console.log(`stdout: ${stdout}`);
+            console.error(`stderr: ${stderr}`);
+        });
+    }
+
+    res.status(200).json({sent: true})
 })
 
 const server = app.listen(HTTP_PORT, () => {
     console.log("Server is listening on port " + HTTP_PORT);
 });
 
-module.exports = { server, db }
+module.exports = {server, db}
 
 
