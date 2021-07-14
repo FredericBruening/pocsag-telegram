@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+input, textarea {
+    @apply border;
+}
+
+.btn {
+    @apply block px-3 py-2 rounded shadow;
+}
+
+.btn-sm {
+    @apply block px-2 py-1 text-sm rounded shadow;
+}

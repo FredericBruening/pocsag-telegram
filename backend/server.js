@@ -3,6 +3,13 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 
+app.use(express.static('client'))
+
+
+app.get("/", (req, res) => {
+    res.render('index.html');
+});
+
 const HTTP_PORT = 8000
 
 if (!process.env.DB) process.env.DB = './database.db'
@@ -41,7 +48,7 @@ app.get("/receivers", (req, res, next) => {
             res.status(400).json({"error": err.message});
             return;
         }
-        res.status(200).json({rows});
+        res.status(200).json(rows);
     });
 });
 

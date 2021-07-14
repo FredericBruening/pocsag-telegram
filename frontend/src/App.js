@@ -7,7 +7,7 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <div>
+                <div className={"container mx-auto"}>
                     <Receivers />
                 </div>
             </header>
